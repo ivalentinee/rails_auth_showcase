@@ -10,6 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_10_03_204000) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "assignee_id"
+    t.string "state", default: "new", null: false
+    t.text "description"
+    t.text "comment"
+    t.bigint "managed_by", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "role"
+    t.string "phone_number"
+    t.bigint "managed_by", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "tasks", "users", column: "assignee_id"
 end

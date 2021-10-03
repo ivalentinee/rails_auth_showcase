@@ -1,3 +1,11 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get '/manager/tasks', to: 'manager/tasks#list'
+  post '/manager/tasks', to: 'manager/tasks#create'
+  patch '/manager/tasks/:id', to: 'manager/tasks#update'
+  delete '/manager/tasks/:id', to: 'manager/tasks#delete'
+  post '/manager/tasks/:id/assign', to: 'manager/tasks#assign'
+  post '/manager/tasks/merge', to: 'manager/tasks#merge'
+
+  get '/worker/tasks', to: 'worker/tasks#list'
+  patch '/worker/tasks/:id', to: 'worker/tasks#update'
 end

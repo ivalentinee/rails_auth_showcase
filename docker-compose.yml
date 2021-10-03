@@ -1,5 +1,14 @@
 version: '3.6'
+
 services:
+  db:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432
+
   web:
     build:
       context: .
@@ -8,4 +17,6 @@ services:
       - 3000:3000
     volumes:
       - ./:/app
+    links:
+      - db
     user: "1000:1000"

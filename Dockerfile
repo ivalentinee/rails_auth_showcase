@@ -1,17 +1,15 @@
-FROM ruby:3.0.2-slim AS dev
+FROM ruby:3.0.2 AS dev
 
 EXPOSE 3000
 
 WORKDIR /app
 
-RUN useradd -m -u 1000 localuser
+RUN useradd -m -u 1000 localuser && \
+    su localuser -c "bundle config path \"vendor/bundle\""
 
 RUN apt update && \
-    apt install -y --no-install-recommends sqlite3 curl make build-essential libsqlite3-dev && \
+    apt install -y --no-install-recommends make build-essential libpq-dev iputils-ping curl && \
     apt clean
 
+
 CMD ["bash", "/app/run/dev.sh"]
-
-COPY ["Gemfile", "Gemfile.lock", "/app/"]
-
-RUN bundle install
