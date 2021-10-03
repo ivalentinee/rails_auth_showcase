@@ -7,6 +7,12 @@ gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 
+# All the authorization gems
+gem 'pundit'
+gem 'cancancan'
+gem 'kan'
+gem 'action_policy'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
