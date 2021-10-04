@@ -51,16 +51,19 @@ class ManagerTaskTest < ActionDispatch::IntegrationTest
     assert_equal 0, tasks.count
   end
 
-  test "assignes task" do
-    task = create :task, managed_by: [@manager.id]
+  test "assignes tasks" do
+    task_1 = create :task, managed_by: [@manager.id], description: "111"
+    task_2 = create :task, managed_by: [@manager.id], description: "222"
     worker = create :worker, managed_by: [@manager.id]
 
-    post "/manager/tasks/#{task.id}/assign?auth_user_id=#{@manager.id}", params: {"worker_id" => worker.id}
+    params = {"worker_id" => worker.id, "task_ids" => [task_1.id, task_2.id]}
+    post "/manager/tasks/assign?auth_user_id=#{@manager.id}", params: params
     assert_response :success
 
     tasks = displayed_tasks
 
     assert_equal worker.id, tasks[0]["assignee_id"]
+    assert_equal worker.id, tasks[1]["assignee_id"]
   end
 
   test "merges tasks" do

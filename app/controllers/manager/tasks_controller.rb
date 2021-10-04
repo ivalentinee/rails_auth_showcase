@@ -26,7 +26,7 @@ class Manager::TasksController < ApplicationController
   end
 
   def assign
-    ::Services::Manager::Tasks.assign(params["id"], params["worker_id"])
+    ::Services::Manager::Tasks.assign(params["worker_id"], params["task_ids"])
     render text: "ok"
   end
 

@@ -20,11 +20,14 @@ module Services
           task.destroy
         end
 
-        def assign(id, worker_id)
-          task = Task.find(id)
+        def assign(worker_id, task_ids)
+          tasks = Task.find(task_ids)
           worker = User.where(role: "worker").find(worker_id)
-          task.assignee = worker
-          task.save!
+
+          tasks.each do |task|
+            task.assignee = worker
+            task.save!
+          end
         end
 
         def merge(ids)

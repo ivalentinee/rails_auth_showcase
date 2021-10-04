@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post '/manager/tasks', to: 'manager/tasks#create'
   patch '/manager/tasks/:id', to: 'manager/tasks#update'
   delete '/manager/tasks/:id', to: 'manager/tasks#delete'
-  post '/manager/tasks/:id/assign', to: 'manager/tasks#assign'
+  post '/manager/tasks/assign', to: 'manager/tasks#assign'
   post '/manager/tasks/merge', to: 'manager/tasks#merge'
 
   get '/worker/tasks', to: 'worker/tasks#list'
