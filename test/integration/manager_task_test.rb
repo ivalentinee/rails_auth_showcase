@@ -3,6 +3,7 @@ require "test_helper"
 class ManagerTaskTest < ActionDispatch::IntegrationTest
   setup do
     @manager = create :manager
+    @another_manager = create :manager
   end
 
   test "lists tasks" do
@@ -78,6 +79,39 @@ class ManagerTaskTest < ActionDispatch::IntegrationTest
     assert_equal 1, tasks.count
     expected_description = task_1.description + "\n" + task_2.description
     assert_equal expected_description, tasks[0]["description"]
+  end
+
+  ### Now to authorization
+
+  test "does not update another's task" do
+    task = create :task, managed_by: [@another_manager.id], description: "some description"
+    params = {description: "some other description"}
+    patch "/manager/tasks/#{task.id}?auth_user_id=#{@manager.id}", params: params, as: :json
+    assert_response 401
+  end
+
+  test "does not assign another's task" do
+    task = create :task, managed_by: [@another_manager.id], description: "111"
+    worker = create :worker, managed_by: [@manager.id]
+    params = {"worker_id" => worker.id, "task_ids" => [task.id]}
+    post "/manager/tasks/assign?auth_user_id=#{@manager.id}", params: params
+    assert_response 401
+  end
+
+  test "does not assign task to another's worker" do
+    task = create :task, managed_by: [@manager.id], description: "111"
+    worker = create :worker, managed_by: [@another_manager.id]
+    params = {"worker_id" => worker.id, "task_ids" => [task.id]}
+    post "/manager/tasks/assign?auth_user_id=#{@manager.id}", params: params
+    assert_response 401
+  end
+
+  test "does not merge task with another's task" do
+    task_1 = create :task, managed_by: [@manager.id], description: "111"
+    task_2 = create :task, managed_by: [@another_manager.id], description: "222"
+
+    post "/manager/tasks/merge?auth_user_id=#{@manager.id}", params: {"ids" => [task_1.id, task_2.id]}
+    assert_response 401
   end
 
   private
