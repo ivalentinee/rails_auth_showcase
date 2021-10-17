@@ -6,8 +6,7 @@ module Services
           Task.where(assignee_id: worker.id).all()
         end
 
-        def update(id, params)
-          task = Task.find(id)
+        def update(task, params)
           task.update(params)
         end
       end

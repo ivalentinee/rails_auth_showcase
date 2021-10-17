@@ -5,7 +5,9 @@ class Worker::TasksController < ApplicationController
   end
 
   def update
-    if ::Services::Worker::Tasks.update(params["id"], task_params)
+    task = ::Services::Tasks.get(params["id"])
+
+    if ::Services::Worker::Tasks.update(task, task_params)
       render text: "ok"
     else
       render text: "error"

@@ -13,7 +13,9 @@ class Manager::TasksController < ApplicationController
   end
 
   def update
-    if ::Services::Manager::Tasks.update(params["id"], task_params)
+    task = ::Services::Tasks.get(params["id"])
+
+    if ::Services::Manager::Tasks.update(task, task_params)
       render text: "ok"
     else
       render text: "error"
@@ -21,17 +23,24 @@ class Manager::TasksController < ApplicationController
   end
 
   def delete
-    ::Services::Manager::Tasks.delete(params["id"])
+    task = ::Services::Tasks.get(params["id"])
+
+    ::Services::Manager::Tasks.delete(task)
     render text: "ok"
   end
 
   def assign
-    ::Services::Manager::Tasks.assign(params["worker_id"], params["task_ids"])
+    tasks = ::Services::Tasks.get(params["task_ids"])
+    worker = ::Services::Users.get(params["worker_id"])
+
+    ::Services::Manager::Tasks.assign(worker, tasks)
     render text: "ok"
   end
 
   def merge
-    ::Services::Manager::Tasks.merge(params["ids"])
+    tasks = ::Services::Tasks.get(params["ids"])
+
+    ::Services::Manager::Tasks.merge(tasks)
     render text: "ok"
   end
 

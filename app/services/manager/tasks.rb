@@ -10,28 +10,22 @@ module Services
           Task.create(params)
         end
 
-        def update(id, params)
-          task = Task.find(id)
+        def update(task, params)
           task.update(params)
         end
 
-        def delete(id)
-          task = Task.find(id)
+        def delete(task)
           task.destroy
         end
 
-        def assign(worker_id, task_ids)
-          tasks = Task.find(task_ids)
-          worker = User.where(role: "worker").find(worker_id)
-
+        def assign(worker, tasks)
           tasks.each do |task|
             task.assignee = worker
             task.save!
           end
         end
 
-        def merge(ids)
-          tasks = Task.find(ids)
+        def merge(tasks)
           task_descriptions = tasks.map {|task| task.description}
           merged_description = task_descriptions.join("\n")
 
