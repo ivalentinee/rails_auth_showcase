@@ -6,6 +6,7 @@ class Worker::TasksController < ApplicationController
 
   def update
     task = ::Services::Tasks.get(params["id"])
+    Authorization.authorize!(:worker_task_update, @current_user, task)
 
     if ::Services::Worker::Tasks.update(task, task_params)
       render text: "ok"

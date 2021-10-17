@@ -6,6 +6,8 @@ require_relative '../app/services/tasks'
 require_relative '../app/services/users'
 require_relative '../app/services/manager/tasks'
 require_relative '../app/services/worker/tasks'
+require_relative '../app/authorization'
+require_relative '../app/authorization/unauthorized_exception'
 
 
 # Initialize the Rails application.
