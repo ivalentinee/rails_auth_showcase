@@ -6,7 +6,9 @@ require_relative '../app/services/tasks'
 require_relative '../app/services/users'
 require_relative '../app/services/manager/tasks'
 require_relative '../app/services/worker/tasks'
-
+require_relative '../app/policies/application_policy'
+require_relative '../app/policies/manager_task_policy'
+require_relative '../app/policies/worker_task_policy'
 
 # Initialize the Rails application.
 Rails.application.initialize!
